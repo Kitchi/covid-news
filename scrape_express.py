@@ -22,7 +22,7 @@ if os.path.exists('page_no'):
 # They have 25117 pages of archives on the IE website at the time of writing
 for pp in range(beg, 11525):
     titles = []
-    print(f"Processing page {pp}/25118")
+    print(f"Processing page {pp}/25118", end="\r")
     if pp > 0:
         page_url = base_url + f'page/{pp}/'
     else:
@@ -38,9 +38,12 @@ for pp in range(beg, 11525):
         date = h2.findNextSibling('div').contents[0].strip()
         date = date.split()
 
+        if len(date) == 0:
+            continue
+
         with open(fname, 'a') as fptr:
-            fptr.write(f"{date[0]:<9s} {date[1].strip(','):<2s} "
-                       f"{date[2]:<4s} {heading:<s}\n")
+            fptr.write(f"{str(date[0]):<9s} {str(date[1]).strip(','):<2s} "
+                       f"{str(date[2]):<4s} {str(heading):<s}\n")
 
         np.savetxt('page_no', [pp,], fmt='%d')
 
